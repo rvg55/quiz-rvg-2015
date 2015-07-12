@@ -57,7 +57,7 @@ exports.new = function(req, res) {
   res.render('quizes/new', {quiz: quiz, errors: []});
 };
 
-// GET /quizes/create
+// POST /quizes/create
 exports.create = function(req, res) {
   console.log("controller de create");
   var quiz = models.Quiz.build( req.body.quiz );
