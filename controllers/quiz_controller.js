@@ -19,7 +19,7 @@ exports.index = function(req, res) {
   if(req.query.search !== undefined) {
     var search = req.query.search.replace(/\s/g,'%');
     search = '%'+search+'%';
-    console.log("Buscando: "+search);
+
     models.Quiz.findAll({where: ["pregunta like ?", search]}).then(
       function(quizes){
         if(quizes){
@@ -59,7 +59,6 @@ exports.new = function(req, res) {
 
 // POST /quizes/create
 exports.create = function(req, res) {
-  console.log("controller de create");
   var quiz = models.Quiz.build( req.body.quiz );
   quiz.validate().then(function(err){
     if(err){
@@ -77,4 +76,23 @@ exports.create = function(req, res) {
 // GET /quizes/:id/edit
 exports.edit = function(req, res) {
   res.render('quizes/edit', {quiz: req.quiz, errors: []});
+};
+
+// PUT /quizes/:id
+exports.update = function(req, res) {
+  req.quiz.pregunta = req.body.quiz.pregunta;
+  req.quiz.respuesta = req.body.quiz.respuesta;
+
+  req.quiz.validate().then(function(err){
+    if(err){
+      res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
+    } else {
+      // guarda en la DB los campos pregunta y respuesta de quiz
+      req.quiz
+      .save({fields: ["pregunta","respuesta"]})
+      .then(function(){
+        res.redirect('/quizes');
+      }); // Redireccion HTTP (URL relativo) lista de preguntas
+    }
+  })
 };
