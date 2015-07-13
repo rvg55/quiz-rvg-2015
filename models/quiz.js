@@ -13,6 +13,12 @@ module.exports = function(sequelize, DataTypes) {
         validate: {
           notEmpty: {msg: "-> Falta respuesta" }
         }
+      },
+      tematico: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {msg: "-> Falta tematico" }
+        }
       }
     }
   );

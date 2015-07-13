@@ -53,7 +53,7 @@ exports.answer = function(req, res) {
 
 // GET /quizes/new
 exports.new = function(req, res) {
-  var quiz = models.Quiz.build({pregunta: "pregunta",respuesta: "respuesta"});
+  var quiz = models.Quiz.build({pregunta: "pregunta",respuesta: "respuesta",respuesta: "tematico"});
   res.render('quizes/new', {quiz: quiz, errors: []});
 };
 
@@ -65,7 +65,7 @@ exports.create = function(req, res) {
       res.render('quizes/new', {quiz: quiz, errors: err.errors});
     } else {
       // guarda en la DB los campos pregunta y respuesta de quiz
-      quiz.save({fields: ["pregunta","respuesta"]})
+      quiz.save({fields: ["pregunta","respuesta","tematico"]})
       .then(function(){
         res.redirect('/quizes');
       }); // Redireccion HTTP (URL relativo) lista de preguntas
@@ -82,6 +82,7 @@ exports.edit = function(req, res) {
 exports.update = function(req, res) {
   req.quiz.pregunta = req.body.quiz.pregunta;
   req.quiz.respuesta = req.body.quiz.respuesta;
+  req.quiz.tematico = req.body.quiz.tematico;
 
   req.quiz.validate().then(function(err){
     if(err){
@@ -89,10 +90,17 @@ exports.update = function(req, res) {
     } else {
       // guarda en la DB los campos pregunta y respuesta de quiz
       req.quiz
-      .save({fields: ["pregunta","respuesta"]})
+      .save({fields: ["pregunta","respuesta","tematico"]})
       .then(function(){
         res.redirect('/quizes');
       }); // Redireccion HTTP (URL relativo) lista de preguntas
     }
   })
+};
+
+// DELETE /quizes/:id
+exports.destroy = function(req, res) {
+  req.quiz.destroy().then(function(){
+    res.redirect('/quizes');
+  }).catch(function(err){next(err)});
 };
