@@ -20,14 +20,17 @@ exports.index = function(req, res) {
     var search = req.query.search.replace(/\s/g,'%');
     search = '%'+search+'%';
     console.log("Buscando: "+search);
-    models.Quiz.findAll({where: ["pregunta like ?", search]}).then(
-      function(quizes){
-        if(quizes){
-          res.render('quizes/index', {quizes: quizes});
-        } else {
-          next(new Error('No existen preguntas con el texto: '+req.query.texto));
-        };
-      }
+    models.Quiz.findAll({
+        where: ["pregunta like ?", search],
+        order: "pregunta ASC"
+      }).then(
+        function(quizes){
+          if(quizes){
+            res.render('quizes/index', {quizes: quizes});
+          } else {
+            next(new Error('No existen preguntas con el texto: '+req.query.texto));
+          };
+        }
     ).catch(function(error) {next(error);});
   } else {
     models.Quiz.findAll().then(
