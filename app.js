@@ -8,7 +8,6 @@ var partials = require('express-partials');
 var methodOverride = require('method-override');
 
 var routes = require('./routes/index');
-
 var app = express();
 
 // view engine setup
@@ -27,7 +26,6 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-// app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -61,6 +59,5 @@ app.use(function(err, req, res, next) {
     errors: []
   });
 });
-
 
 module.exports = app;
