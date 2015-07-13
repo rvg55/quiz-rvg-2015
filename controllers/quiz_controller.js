@@ -1,5 +1,5 @@
 
-//var models = require('../models/models.js');
+var models = require('../models/models.js');
 
 // autoload - factoriza el codigo si ruta incluye :quizId
 exports.load = function(req, res, next, quizId) {
