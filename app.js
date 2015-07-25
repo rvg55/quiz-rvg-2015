@@ -23,6 +23,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser('Quiz_2015'));
+
 app.use(session());
 // app.use(session({cookie:{maxAge:120000}}));
 
@@ -34,8 +35,9 @@ app.use(function(req, res, next) {
   if(req.session.user) {
     var expTime = 2*60*1000;
     if(req.session.lastCall) {
+      var sum = (req.session.lastCall + expTime);
       req.session.lastCall = Date.now();
-      if ( Date.now() >= (req.session.lastCall + expTime)) {
+      if ( Date.now() >= sum) {
         req.session.lastCall = undefined;
         res.redirect('/logout');
       }
