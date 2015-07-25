@@ -29,6 +29,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // helpers dinamicos
 app.use(function(req, res, next) {
+  // if (!req.session.redir) {                                // si no existe lo inicializa
+  //   req.session.redir = '/';
+  // }
   // guarda el path en session.redir para despues de realizar el login
   if (!req.path.match(/\/login|\/logout/)) {
     req.session.redir = req.path;
